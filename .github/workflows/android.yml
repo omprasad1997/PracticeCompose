@@ -1,4 +1,4 @@
-name: Android CI
+name: Android Matrix Build
 
 on:
   push:
@@ -9,33 +9,29 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        flavor: [dev, staging, production]
+
     steps:
-      - name: Checkout Repository
+
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup JDK
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
-      - name: Grant execute permission
+      - name: Grant permission
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Build Flavor
+        run: ./gradlew assemble${{ matrix.flavor }}Debug
 
-      - name: Build Release AAB
-        run: ./gradlew bundleRelease
-
-      - name: Upload Debug APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Upload Release AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-aab
-          path: app/build/outputs/bundle/release/app-release.aab
+          name: apk-${{ matrix.flavor }}
+          path: app/build/outputs/apk/${{ matrix.flavor }}/debug/
