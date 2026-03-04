@@ -3,6 +3,11 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
+//    But Hilt does NOT support KSP yet fully in stable projects.
+//    It still expects KAPT.
+//    ksp(libs.hilt.compiler)
 }
 
 android {
@@ -63,8 +68,12 @@ dependencies {
     // Lifecycle ViewModel for Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Existing dependencies
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -73,4 +82,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("com.squareup:javapoet:1.13.0")
+    }
+}
+
+kapt {
+    correctErrorTypes = true
 }
