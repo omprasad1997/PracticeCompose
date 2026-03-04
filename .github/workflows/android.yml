@@ -2,7 +2,7 @@ name: Android Matrix Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "different_flavors" ]
 
 jobs:
   build:
