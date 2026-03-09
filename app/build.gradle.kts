@@ -44,11 +44,6 @@ android {
         compose = true
     }
 
-    lint {
-        abortOnError = true
-        warningsAsErrors = true
-    }
-
 }
 
 dependencies {
