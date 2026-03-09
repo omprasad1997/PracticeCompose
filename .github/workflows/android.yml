@@ -2,7 +2,7 @@ name: Android CI
 
 on:
   push:
-    branches: [ "compose_with_ktor" ]
+    branches: [ "testing_app" ]
 
 jobs:
   build:
@@ -22,9 +22,15 @@ jobs:
       - name: Grant execute permission
         run: chmod +x gradlew
 
+      #Run Unit Tests First
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      #Build APK only if tests pass
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
+      #Build Release AAB
       - name: Build Release AAB
         run: ./gradlew bundleRelease
 
