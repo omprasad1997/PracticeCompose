@@ -29,7 +29,7 @@ fun UserItem(user: User) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            Text(text = user.email)
+            Text("Hello")
 
         }
     }
